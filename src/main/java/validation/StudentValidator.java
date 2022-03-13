@@ -4,7 +4,7 @@ import domain.Student;
 public class StudentValidator implements Validator<Student> {
     public void validate(Student student) throws ValidationException {
         if (student.getID() == null || student.getID().equals("")) {
-            throw new ValidationException("ID invalid! \n");
+                throw new ValidationException("ID invalid! \n");
         }
         if (student.getNume() == null || student.getNume().equals("")) {
             throw new ValidationException("Nume invalid! \n");

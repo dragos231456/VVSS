@@ -2,8 +2,12 @@ package ssvv.example;
 
 import domain.Nota;
 import domain.Pair;
+import domain.Student;
 import org.junit.Test;
+import repository.*;
+import service.Service;
 import validation.NotaValidator;
+import validation.StudentValidator;
 import validation.ValidationException;
 import validation.Validator;
 
@@ -14,38 +18,82 @@ import static org.junit.Assert.*;
  */
 public class AppTest 
 {
-    /**
-     * Rigorous Test :-)
-     */
+
+    Validator<Student> studentValidator = new StudentValidator();
+    StudentXMLRepository studentRepository = new StudentXMLRepository(studentValidator, "st_repo.xml");
+    Service service = new Service(studentRepository, null, null);
+
     @Test
-    public void shouldAnswerWithTrue()
-    {
-        assertTrue( true );
+    public void tc_1_InvalidStudent_InvalidId() {
+        Student student = new Student("", "Nuna", 935);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("ID invalid! \n", ex.getMessage());
+        }
     }
 
     @Test
-    public void tc_1_ValidGrade() {
-        Nota nota = new Nota(new Pair<>("2", "3"), 4.5, 12, "se putea si mai rau");
-        Validator<Nota> gradeValidator = new NotaValidator();
-
+    public void tc_2_InvalidStudent_InvalidName() {
+        Student student = new Student("3", null, 935);
         try {
-        gradeValidator.validate(nota);
+            studentValidator.validate(student);
+            fail();
         }
-        catch (Exception ex) {
+        catch (ValidationException ex) {
+            assertEquals("Nume invalid! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_3_InvalidStudent_InvalidGroup() {
+        Student student = new Student("3", "Nuna", 100);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("Grupa invalida! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_4_ValidStudent() {
+        Student student = new Student("3", "Nuna", 935);
+        try {
+            studentValidator.validate(student);
+            assertTrue(true);
+        }
+        catch (ValidationException ex) {
             fail();
         }
     }
 
     @Test
-    public void tc_2_InvalidGrade() {
-        Nota nota = new Nota(new Pair<>(null, "3"), 4.5, 12, "se putea si mai rau");
-        Validator<Nota> gradeValidator = new NotaValidator();
+    public void tc_5_Repo_AddStudent_Invalid() {
+        Student student = new Student("3", "Nuna", 100);
+        Student addedStudent = studentRepository.save(student);
+        assertNull(addedStudent);
+    }
 
-        try {
-            gradeValidator.validate(nota);
-            fail();
-        } catch (ValidationException ex) {
-            assertEquals("ID Student invalid! \n", ex.getMessage());
-        }
+    @Test
+    public void tc_6_Repo_AddStudent_Valid() {
+        Student student = new Student("3", "Nuna", 935);
+        Student addedStudent = studentRepository.save(student);
+        assertEquals(student, addedStudent);
+    }
+
+    @Test
+    public void tc_7_Service_AddStudent_Invalid() {
+        int returnValue = service.saveStudent("3", "Nuna", 100);
+        assertEquals(1, returnValue);
+    }
+
+    @Test
+    public void tc_8_Service_AddStudent_Valid() {
+        int returnValue = service.saveStudent("3", "Nuna", 935);
+        assertEquals(0, returnValue);
     }
 }
