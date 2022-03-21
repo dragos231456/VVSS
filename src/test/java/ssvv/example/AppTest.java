@@ -24,43 +24,7 @@ public class AppTest
     Service service = new Service(studentRepository, null, null);
 
     @Test
-    public void tc_1_InvalidStudent_InvalidId() {
-        Student student = new Student("", "Nuna", 935);
-        try {
-            studentValidator.validate(student);
-            fail();
-        }
-        catch (ValidationException ex) {
-            assertEquals("ID invalid! \n", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void tc_2_InvalidStudent_InvalidName() {
-        Student student = new Student("3", null, 935);
-        try {
-            studentValidator.validate(student);
-            fail();
-        }
-        catch (ValidationException ex) {
-            assertEquals("Nume invalid! \n", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void tc_3_InvalidStudent_InvalidGroup() {
-        Student student = new Student("3", "Nuna", 100);
-        try {
-            studentValidator.validate(student);
-            fail();
-        }
-        catch (ValidationException ex) {
-            assertEquals("Grupa invalida! \n", ex.getMessage());
-        }
-    }
-
-    @Test
-    public void tc_4_ValidStudent() {
+    public void tc_1_ValidStudent() {
         Student student = new Student("3", "Nuna", 935);
         try {
             studentValidator.validate(student);
@@ -72,27 +36,99 @@ public class AppTest
     }
 
     @Test
-    public void tc_5_Repo_AddStudent_Invalid() {
+    public void tc_2_InvalidStudent_EmptyId() {
+        Student student = new Student("", "Nuna", 935);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("ID invalid! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_3_InvalidStudent_NullId() {
+        Student student = new Student(null, "Nuna", 935);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("ID invalid! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_4_InvalidStudent_NullName() {
+        Student student = new Student("3", null, 935);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("Nume invalid! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_5_InvalidStudent_EmptyName() {
+        Student student = new Student("3", null, 935);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("Nume invalid! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_6_InvalidStudent_GroupUnder110() {
+        Student student = new Student("3", "Nuna", 100);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("Grupa invalida! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_7_InvalidStudent_GroupOver938() {
+        Student student = new Student("3", "Nuna", 938);
+        try {
+            studentValidator.validate(student);
+            fail();
+        }
+        catch (ValidationException ex) {
+            assertEquals("Grupa invalida! \n", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void tc_8_Repo_AddStudent_Invalid() {
         Student student = new Student("3", "Nuna", 100);
         Student addedStudent = studentRepository.save(student);
         assertNull(addedStudent);
     }
 
     @Test
-    public void tc_6_Repo_AddStudent_Valid() {
+    public void tc_9_Repo_AddStudent_Valid() {
         Student student = new Student("3", "Nuna", 935);
         Student addedStudent = studentRepository.save(student);
         assertEquals(student, addedStudent);
     }
 
     @Test
-    public void tc_7_Service_AddStudent_Invalid() {
+    public void tc_10_Service_AddStudent_Invalid() {
         int returnValue = service.saveStudent("3", "Nuna", 100);
         assertEquals(1, returnValue);
     }
 
     @Test
-    public void tc_8_Service_AddStudent_Valid() {
+    public void tc_11_Service_AddStudent_Valid() {
         int returnValue = service.saveStudent("3", "Nuna", 935);
         assertEquals(0, returnValue);
     }
