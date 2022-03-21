@@ -3,6 +3,8 @@ package ssvv.example;
 import domain.Nota;
 import domain.Pair;
 import domain.Student;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import repository.*;
 import service.Service;
@@ -10,6 +12,8 @@ import validation.NotaValidator;
 import validation.StudentValidator;
 import validation.ValidationException;
 import validation.Validator;
+
+import java.io.File;
 
 import static org.junit.Assert.*;
 
@@ -116,20 +120,28 @@ public class AppTest
 
     @Test
     public void tc_9_Repo_AddStudent_Valid() {
+        StudentXMLRepository studentRepository1 = new StudentXMLRepository(studentValidator, "st_repo1.xml");
+
         Student student = new Student("3", "Nuna", 935);
-        Student addedStudent = studentRepository.save(student);
-        assertEquals(student, addedStudent);
+
+        Student addedStudent = studentRepository1.save(student);
+
+        assertNull(addedStudent);
+
+        File repo_file = new File("st_repo1.xml");
+        repo_file.delete();
     }
 
     @Test
-    public void tc_10_Service_AddStudent_Invalid() {
-        int returnValue = service.saveStudent("3", "Nuna", 100);
-        assertEquals(1, returnValue);
-    }
+    public void tc_10_Repo_AddStudent_Duplicate() {
+        StudentXMLRepository studentRepository2 = new StudentXMLRepository(studentValidator, "st_repo2.xml");
 
-    @Test
-    public void tc_11_Service_AddStudent_Valid() {
-        int returnValue = service.saveStudent("3", "Nuna", 935);
-        assertEquals(0, returnValue);
+        Student student = new Student("3", "Nuna", 935);
+        Student addedStudent = studentRepository2.save(student);
+        Student duplicateStudent = studentRepository2.save(student);
+        assertEquals(student, duplicateStudent);
+
+        File repo_file = new File("st_repo2.xml");
+        repo_file.delete();
     }
 }
