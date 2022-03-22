@@ -22,7 +22,6 @@ import static org.junit.Assert.*;
  */
 public class AppTest 
 {
-
     Validator<Student> studentValidator = new StudentValidator();
     StudentXMLRepository studentRepository = new StudentXMLRepository(studentValidator, "st_repo.xml");
     Service service = new Service(studentRepository, null, null);
