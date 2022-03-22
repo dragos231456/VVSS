@@ -1,11 +1,5 @@
 package ssvv.example;
 
-import domain.Nota;
-import domain.Pair;
-import domain.Student;
-import domain.Tema;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -24,13 +18,13 @@ public class WhiteBoxTest {
     Service service = new Service(null, assignmentRepository, null);
 
     @BeforeAll
-    public void before() throws IOException {
+    static void before() throws IOException {
         File repo_file = new File("wbt_repo.xml");
         repo_file.createNewFile();
     }
 
     @AfterAll
-    public void after() {
+    static void after() {
         File repo_file = new File("wbt_repo.xml");
         repo_file.delete();
     }
