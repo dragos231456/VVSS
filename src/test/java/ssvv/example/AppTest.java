@@ -14,6 +14,7 @@ import validation.ValidationException;
 import validation.Validator;
 
 import java.io.File;
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
