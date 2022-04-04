@@ -40,19 +40,19 @@ public class WhiteBoxTest {
     }
 
     @Test
-    public void tc_2_wbt_addAssignment_NegativeDeadline() {
+    public void tc_3_wbt_addAssignment_NegativeDeadline() {
         int actual = service.saveTema("2", "Description", -2, 1);
         assertEquals(1, actual);
     }
 
     @Test
-    public void tc_2_wbt_addAssignment_NegativeStartLine() {
+    public void tc_4_wbt_addAssignment_NegativeStartLine() {
         int actual = service.saveTema("2", "Description", 2, -1);
         assertEquals(1, actual);
     }
 
     @Test
-    public void tc_2_wbt_addAssignment_ValidAssignment() throws FileNotFoundException, UnsupportedEncodingException {
+    public void tc_5_wbt_addAssignment_ValidAssignment() throws FileNotFoundException, UnsupportedEncodingException {
         int actual = service.saveTema("2", "Description", 2, 1);
         assertEquals(0, actual);
         after();
