@@ -32,7 +32,7 @@ public class BigBangIntegrationTest {
 
     static Service service = new Service(studentXMLRepository, assignmentXMLRepository, notaXMLRepository);
 
-    public void cleanup(String repoFile) throws FileNotFoundException, UnsupportedEncodingException {
+    public static void cleanup(String repoFile) throws FileNotFoundException, UnsupportedEncodingException {
         File repo = new File(repoFile);
         repo.delete();
         PrintWriter writer = new PrintWriter(repoFile, "UTF-8");
